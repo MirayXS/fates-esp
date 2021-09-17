@@ -595,7 +595,11 @@ end
 local Window
 
 local Load = function()
-    local Settings = JSONDecode(Services.HttpService, readfile("fates-esp.json"));
+    local Succ, Settings = pcall(JSONDecode, Services.HttpService, readfile("fates-esp.json"));
+    if (type(Settings) ~= 'table') then
+        delfile("fates-esp.json");
+        return nil
+    end
     local NewSettings = {}
     for i, v in next, Settings do
         NewSettings[i] = v
